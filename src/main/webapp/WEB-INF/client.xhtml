@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Facelet Title</title>
+</h:head>
+<h:body>
+    <h:form id="form" onLoad="reset()">
+        <p:dataTable id="dataTable" var="user" value="#{userController.users}" styleClass="userDataTableStyle" selection="#{userController.selectedUsers}" rowKey="#{user.getUsername()}">
+            <f:facet name="header">
+                User List
+            </f:facet>
+            <p:column selectionMode="multiple" style="width:18px"/>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="User Id"/>
+                </f:facet>
+                <p:commandLink value="#{user.id}" update=":userDetailForm:display" oncomplete="userDialog.show()"
+                               title="View">
+                    <f:setPropertyActionListener value="#{user}" target="#{userController.selectedUser}"/>
+                </p:commandLink>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Username"/>
+                </f:facet>
+                <h:outputText value="#{user.username}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Password"/>
+                </f:facet>
+                <h:outputText value="#{user.password}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Role"/>
+                </f:facet>
+                <h:outputText value="#{user.role}"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <p:dialog header="User Detail" widgetVar="userDialog" resizable="false" id="userDlg">
+        <h:form id="userDetailForm">
+            <p:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
+                <h:outputText value="Username :"></h:outputText>
+                <h:outputText value="#{userController.selectedUser.username}"/>
+
+                <h:outputText value="password :"></h:outputText>
+                <h:inputText value="#{userController.selectedUser.password}" required="true"
+                             requiredMessage="Please Enter password!"/>
+
+                <h:outputText value="role :"></h:outputText>
+                <h:inputText value="#{userController.selectedUser.role}" required="true"
+                             requiredMessage="Please Enter role!"/>
+
+
+                <f:facet name="footer">
+                    <p:commandButton value="Update" update=":form:dataTable"
+                                     oncomplete="handleSubmitRequest(xhr, status, args, 'userDlg','newUserForm'); "
+                                     actionListener="#{userController.doUpdateUser}"/>
+                </f:facet>
+            </p:panelGrid>
+        </h:form>
+    </p:dialog>
+</h:body>
+</html>
