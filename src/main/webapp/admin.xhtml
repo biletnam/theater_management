@@ -10,7 +10,7 @@
 </h:head>
 <h:body>
     <h:form id="newUserForm">
-        <p:panelGrid id="displayNewUser" columns="2" cellpadding="4" style="margin:0 auto;">
+        <p:panelGrid id="displayNewUser" columns="2" cellpadding="4">
             <f:facet name="header">
                 Add New User
             </f:facet>
@@ -38,7 +38,7 @@
     </h:form>
 
 <h:form>
-    <h:panelGrid id="panel2" columns="2" border="1"
+    <p:panelGrid id="panel2" columns="2" border="1"
                  cellpadding="5" cellspacing="1">
         <f:facet name="header">
             <h:outputText value="Update/Delete Customer Info"/>
@@ -48,24 +48,24 @@
             <f:selectItems value="#{userController.users}"/>
             <f:ajax event="change" render="id uname pwd role" listener="#{userController.loadUser}"/>
         </h:selectOneMenu>
-        <h:outputLabel value="Customer ID:"/>
-        <h:inputText value="#{userController.selectedUser.id}" id="id" readonly="true"/>
-        <h:outputLabel value="First Name:"/>
-        <h:inputText value="#{userController.selectedUser.username}" id="uname"/>
-        <h:outputLabel value="Last Name:"/>
-        <h:inputText value="#{userController.selectedUser.password}" id="pwd"/>
-        <h:outputLabel value="Email:"/>
-        <h:inputText value="#{userController.selectedUser.role}" id="role"/>
+        <h:outputLabel value="User Id:"/>
+        <p:inputText value="#{userController.selectedUser.id}" id="id" readonly="true"/>
+        <h:outputLabel value="Username:"/>
+        <p:inputText value="#{userController.selectedUser.username}" id="uname"/>
+        <h:outputLabel value="Password:"/>
+        <p:inputText value="#{userController.selectedUser.password}" id="pwd"/>
+        <h:outputLabel value="Role:"/>
+        <p:inputText value="#{userController.selectedUser.role}" id="role"/>
         <f:facet name="footer">
             <!--<h:outputLabel value="#{customer.msg}" id="msg2" styleClass="msg"/>-->
-            <h:commandButton value="Update Info" action="#{userController.doUpdateUser}">
+            <p:commandButton value="Update User" action="#{userController.doUpdateUser}">
                 <f:ajax render="ulist id uname pwd role" execute="@form"/>
-            </h:commandButton>
-            <h:commandButton value="Delete Info" action="#{userController.doDeleteUsers}">
+            </p:commandButton>
+            <p:commandButton value="Delete User" action="#{userController.doDeleteUsers}">
                 <f:ajax render="ulist id uname pwd role" execute="@form"/>
-            </h:commandButton>
+            </p:commandButton>
         </f:facet>
-    </h:panelGrid>
+    </p:panelGrid>
 </h:form>
 
 <h:form id="form" onLoad="reset()">
