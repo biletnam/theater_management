@@ -8,6 +8,7 @@
         <driver>mysql</driver>
         <security>
             <user-name>root</user-name>
+            <password>root</password>
         </security>
     </datasource>
 </datasources>

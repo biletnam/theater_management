@@ -33,12 +33,14 @@ public class LoginController implements Serializable {
     private transient Logger logger;
 
     public String login() throws Exception {
-        System.out.println("Logging: " + username + " pass: " + password);
+        logger.info("Logging in...");
         User user = loginService.validateUser(username, password);
 
         if (user != null) {
             HttpSession session = SessionBean.getSession();
             session.setAttribute("user", user);
+
+            logger.info("Validating user: " + username);
 
             // Role found
             return user.getRole().toString() + "?faces-redirect=true";
@@ -57,6 +59,7 @@ public class LoginController implements Serializable {
 
     //logout event, invalidate session
     public String logout() {
+        logger.info("Logging out");
         HttpSession session = SessionBean.getSession();
         session.invalidate();
         return "index?faces-redirect=true";

@@ -3,11 +3,13 @@ package com.dimzak.theater_management.controller;
 import com.dimzak.theater_management.model.User;
 import com.dimzak.theater_management.service.UserService;
 import com.dimzak.theater_management.util.DataAccess;
+import com.dimzak.theater_management.util.SessionBean;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;

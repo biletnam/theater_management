@@ -227,7 +227,7 @@
                 <configuration>
                     <url>jdbc:mysql://localhost:3306/theater_management</url>
                     <user>root</user>
-                    <password></password>
+                    <password>root</password>
                     <schemas>
                         <schema>theater_management</schema>
                     </schemas>

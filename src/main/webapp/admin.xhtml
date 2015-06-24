@@ -9,6 +9,10 @@
     <title>JSF Hibernate CRUD Example</title>
 </h:head>
 <h:body>
+    <h:form id="logoutForm">
+    <p:commandButton id="logout" value="Logout" action="#{loginController.logout}"/>
+    </h:form>
+
     <h:form id="newUserForm">
         <p:panelGrid id="displayNewUser" columns="2" cellpadding="4">
             <f:facet name="header">

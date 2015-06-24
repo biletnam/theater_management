@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "select * from user where username = " + "\"" + username + "\"" + ";";
+            String sql = "select * from users where username = " + "\"" + username + "\"" + ";";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next()) {
                 user.setId(rs.getInt("id"));
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByUserPass(String username, String password) {
         User user = null;
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "select * from user where username = " + "\"" + username + "\"" + " and password = " + "\"" + password + "\"" + ";";
+            String sql = "select * from users where username = " + "\"" + username + "\"" + " and password = " + "\"" + password + "\"" + ";";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next()) {
                 user = new User();
@@ -70,13 +70,13 @@ public class UserServiceImpl implements UserService {
         List<User> userList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
 
-            String sql = "select * from user ;";
+            String sql = "select * from users ;";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next()) {
                 User user = new User();
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
-                user.setId(rs.getInt("id"));
+                user.setId(rs.getInt("user_id"));
                 user.setRole(Role.valueOf(rs.getString("role")));
                 userList.add(user);
             }
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
         try (Connection connection = dataSource.getConnection()) {
             for (User user: users) {
-                String sql = "delete from user where username = \"" + user.getUsername() + "\";";
+                String sql = "delete from users where username = \"" + user.getUsername() + "\";";
                 System.out.println(sql);
                 connection.createStatement().executeUpdate(sql);
 
@@ -111,11 +111,11 @@ public class UserServiceImpl implements UserService {
         Boolean result = false;
 
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "update user set id = " + user.getId() +
+            String sql = "update users set id = " + user.getId() +
                     ", username = " + "\"" + user.getUsername() + "\"" +
                     ", password = " + "\"" + user.getPassword() + "\"" +
                     ", role = " + "\"" + user.getRole() + "\"" +
-                    " where id = " + user.getId() + ";";
+                    " where user_id = " + user.getId() + ";";
             System.out.println(sql);
             connection.createStatement().executeUpdate(sql);
             result = true;
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
         Boolean result = false;
 
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "insert into user values (null, \"" + user.getUsername() + "\", \"" + user.getPassword() + "\", \"" + user.getRole() + "\");";
+            String sql = "insert into users values (null, \"" + user.getUsername() + "\", \"" + user.getPassword() + "\", \"" + user.getRole() + "\");";
             System.out.println(sql);
             connection.createStatement().executeUpdate(sql);
             result = true;
