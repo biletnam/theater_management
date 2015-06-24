@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Client Main Page</title>
+</h:head>
+<h:body>
+    <h:form id="logoutForm">
+    <p:commandButton id="logout" value="Logout" action="#{loginController.logout}"/>
+    </h:form>
+    
+    <h:form id="newUserForm">
+        <p:panelGrid id="displayNewMovie" columns="2" cellpadding="4">
+            <f:facet name="header">
+                Add New User
+            </f:facet>
+            <h:outputText value="User name :"> </h:outputText>
+            <p:inputText value="#{managerController.newMovie.title}" required="true" id="title"
+                         requiredMessage="Please Enter Title!"/>
+
+            <h:outputText value="Description :"> </h:outputText>
+            <p:inputText value="#{managerController.newMovie.description}" required="true" id="description"
+                         requiredMessage="Please Enter description!"/>
+
+            <h:outputText value="Role :"> </h:outputText>
+            <p:inputText value="#{managerController.newMovie.category}" required="true" id="category"
+                         requiredMessage="Please Enter Role!"/>
+
+
+
+            <f:facet name="footer">
+                <!--<h:outputLabel value="#{customer.msg}" id="msg" styleClass="msg"/>-->
+                <p:commandButton value="Save" action="#{managerController.doCreateMovie}">
+                    <f:ajax render="title description category" execute="@form"/>
+                </p:commandButton>
+            </f:facet>
+        </p:panelGrid>
+    </h:form>
+
+<h:form>
+    <p:panelGrid id="panel2" columns="2" border="1"
+                 cellpadding="5" cellspacing="1">
+        <f:facet name="header">
+            <h:outputText value="Update/Delete Movie Info"/>
+        </f:facet>
+        <h:outputLabel value="Select Movie:"/>
+        <h:selectOneMenu value="#{managerController.selectedMovie}" id="ulist">
+            <f:selectItems value="#{managerController.movies}"/>
+            <f:ajax event="change" render="id uname pwd role" listener="#{userController.loadUser}"/>
+        </h:selectOneMenu>
+        <h:outputLabel value="User Id:"/>
+        <p:inputText value="#{managerController.selectedMovie.movies_id}" id="id" readonly="true"/>
+        <h:outputLabel value="Username:"/>
+        <p:inputText value="#{managerController.selectedMovie.title}" id="tit"/>
+        <h:outputLabel value="Password:"/>
+        <p:inputText value="#{managerController.selectedMovie.description}" id="des"/>
+        <h:outputLabel value="Role:"/>
+        <p:inputText value="#{managerController.selectedMovie.category}" id="cat"/>
+        <f:facet name="footer">
+            <!--<h:outputLabel value="#{customer.msg}" id="msg2" styleClass="msg"/>-->
+            <p:commandButton value="Delete User" action="#{userController.doDeleteUsers}">
+                <f:ajax render="ulist id tit des cat" execute="@form"/>
+            </p:commandButton>
+        </f:facet>
+    </p:panelGrid>
+</h:form>
+
+<h:form id="form" onLoad="reset()">
+    <p:dataTable id="dataTable" var="movie" value="#{managerController.movies}" styleClass="userDataTableStyle"
+                 paginator="false" rows="10" selection="#{managerController.selectedMovies}"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 lazy="true" rowsPerPageTemplate="10,15,50" rowKey="#{movie.getTitle()}">
+        <f:facet name="header">
+            User List
+        </f:facet>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="User Id"/>
+            </f:facet>
+            <p:commandLink value="#{movie.movies_id}" update=":userDetailForm:display" oncomplete="userDialog.show()"
+                           title="View">
+                <f:setPropertyActionListener value="#{movie}" target="#{managerController.selectedMovie}"/>
+            </p:commandLink>
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Title"/>
+            </f:facet>
+            <h:outputText value="#{movie.title}"/>
+        </p:column>
+
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Description"/>
+            </f:facet>
+            <h:outputText value="#{movie.description}"/>
+        </p:column>
+
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Role"/>
+            </f:facet>
+            <h:outputText value="#{movie.category}"/>
+        </p:column>
+    </p:dataTable>
+</h:form>
+
+<p:dialog header="User Detail" widgetVar="userDialog" resizable="false" id="userDlg">
+    <h:form id="userDetailForm">
+        <p:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
+            <h:outputText value="Username :"></h:outputText>
+            <h:outputText value="#{managerController.selectedMovie.title}"/>
+
+            <h:outputText value="password :"></h:outputText>
+            <h:inputText value="#{managerController.selectedMovie.description}" required="true"
+                         requiredMessage="Please Enter password!"/>
+
+            <h:outputText value="role :"></h:outputText>
+            <h:inputText value="#{managerController.selectedMovie.category}" required="true"
+                         requiredMessage="Please Enter role!"/>
+        </p:panelGrid>
+    </h:form>
+</p:dialog>
+
+
+</h:body>
+        </html>
