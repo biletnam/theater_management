@@ -1,2 +1,5 @@
-CREATE TABLE user (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
-        username VARCHAR(80), password VARCHAR(80), role VARCHAR(10));
+CREATE TABLE `users` (
+  `user_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `username` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `role` VARCHAR(45) NOT NULL);
