@@ -5,16 +5,18 @@ import com.dimzak.theater_management.service.ReservationService;
 import com.dimzak.theater_management.util.DataAccess;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
 /**
  * @author Dimitris Zakas
  */
-@RequestScoped
+@ApplicationScoped
 @Named
 public class ClientController {
 
@@ -25,6 +27,10 @@ public class ClientController {
     @Inject
     @DataAccess
     private ReservationService reservationService;
+
+    private Date fromDate;
+
+    private Date toDate;
 
     private List<Projection> projections;
 
@@ -40,7 +46,8 @@ public class ClientController {
 
     @PostConstruct
     public void init() {
-        projections = reservationService.displayProjections();
+        getProjectionsByDate();
+
     }
 
     public Logger getLogger() {
@@ -49,13 +56,19 @@ public class ClientController {
 
     public boolean bookSeats() {
         Boolean res = reservationService.bookSeat(reservationId);
-        String message = res? "Seat Booked!":"Could not book seat";
+        String message = res ? "Seat Booked!" : "Could not book seat";
         logger.info(message);
         return true;
     }
 
-    public void setLogger(Logger logger) {
-        this.logger = logger;
+    public void getProjectionsByDate() {
+        if (fromDate != null && toDate != null) {
+            logger.info("filtering projections");
+            projections = reservationService.displayProjectionsByDate(fromDate, toDate);
+        } else {
+            logger.info("Empty Dates for filtering projections");
+            projections = reservationService.displayProjections();
+        }
     }
 
     public ReservationService getReservationService() {
@@ -73,4 +86,21 @@ public class ClientController {
     public void setProjections(List<Projection> projections) {
         this.projections = projections;
     }
+
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Date getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
+
 }

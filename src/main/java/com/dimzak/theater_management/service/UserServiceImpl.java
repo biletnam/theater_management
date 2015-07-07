@@ -25,8 +25,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username) {
 
-        //ResultSet rs  = runQuery("select * from user where username = " + "\"" + username + "\"" + ";");
-
         User user = new User();
         try (Connection connection = dataSource.getConnection()) {
             String sql = "select * from users where username = " + "\"" + username + "\"" + ";";

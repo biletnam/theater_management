@@ -9,11 +9,11 @@
     <title>ADMIN: Manage Users</title>
 </h:head>
 <h:body>
-    <h:outputStylesheet name="/css/style.css" />
+    <h:outputStylesheet name="/css/style.css"/>
     <h:form id="logoutForm">
-    <p:commandButton id="logout" value="Logout" action="#{loginController.logout}"/>
+        <p:commandButton id="logout" value="Logout" action="#{loginController.logout}"/>
     </h:form>
-
+    <br/><br/><br/>
     <h:form id="newUserForm">
         <p:panelGrid id="displayNewUser" columns="2" cellpadding="4">
             <f:facet name="header">
@@ -32,7 +32,6 @@
                          requiredMessage="Please Enter Role!"/>
 
 
-
             <f:facet name="footer">
                 <!--<h:outputLabel value="#{customer.msg}" id="msg" styleClass="msg"/>-->
                 <p:commandButton value="Save" action="#{userController.doCreateUser}">
@@ -41,95 +40,95 @@
             </f:facet>
         </p:panelGrid>
     </h:form>
-
-<h:form>
-    <p:panelGrid id="panel2" columns="2" border="1"
-                 cellpadding="5" cellspacing="1">
-        <f:facet name="header">
-            <h:outputText value="Update/Delete Customer Info"/>
-        </f:facet>
-        <h:outputLabel value="Select User:"/>
-        <h:selectOneMenu value="#{userController.selectedUsername}" id="ulist">
-            <f:selectItems value="#{userController.users}"/>
-            <f:ajax event="change" render="id uname pwd role" listener="#{userController.loadUser}"/>
-        </h:selectOneMenu>
-        <h:outputLabel value="User Id:"/>
-        <p:inputText value="#{userController.selectedUser.id}" id="id" readonly="true"/>
-        <h:outputLabel value="Username:"/>
-        <p:inputText value="#{userController.selectedUser.username}" id="uname"/>
-        <h:outputLabel value="Password:"/>
-        <p:inputText value="#{userController.selectedUser.password}" id="pwd"/>
-        <h:outputLabel value="Role:"/>
-        <p:inputText value="#{userController.selectedUser.role}" id="role"/>
-        <f:facet name="footer">
-            <!--<h:outputLabel value="#{customer.msg}" id="msg2" styleClass="msg"/>-->
-            <p:commandButton value="Update User" action="#{userController.doUpdateUser}">
-                <f:ajax render="ulist id uname pwd role" execute="@form"/>
-            </p:commandButton>
-            <p:commandButton value="Delete User" action="#{userController.doDeleteUsers}">
-                <f:ajax render="ulist id uname pwd role" execute="@form"/>
-            </p:commandButton>
-        </f:facet>
-    </p:panelGrid>
-</h:form>
-
-<h:form id="form" onLoad="reset()">
-    <p:dataTable id="dataTable" var="user" value="#{userController.users}" styleClass="userDataTableStyle"
-                 paginator="false" rows="10" selection="#{userController.selectedUsers}"
-                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                 lazy="true" rowsPerPageTemplate="10,15,50" rowKey="#{user.getUsername()}">
-        <f:facet name="header">
-            User List
-        </f:facet>
-        <p:column>
+    <br/><br/><br/>
+    <h:form>
+        <p:panelGrid id="panel2" columns="2" border="1"
+                     cellpadding="5" cellspacing="1">
             <f:facet name="header">
-                <h:outputText value="User Id"/>
+                <h:outputText value="Update/Delete Customer Info"/>
             </f:facet>
-            <p:commandLink value="#{user.id}" update=":userDetailForm:display" oncomplete="userDialog.show()"
-                           title="View">
-                <f:setPropertyActionListener value="#{user}" target="#{userController.selectedUser}"/>
-            </p:commandLink>
-        </p:column>
-        <p:column>
-            <f:facet name="header">
-                <h:outputText value="Username"/>
+            <h:outputLabel value="Select User:"/>
+            <h:selectOneMenu value="#{userController.selectedUsername}" id="ulist">
+                <f:selectItems value="#{userController.users}"/>
+                <f:ajax event="change" render="id uname pwd role" listener="#{userController.loadUser}"/>
+            </h:selectOneMenu>
+            <h:outputLabel value="User Id:"/>
+            <p:inputText value="#{userController.selectedUser.id}" id="id" readonly="true"/>
+            <h:outputLabel value="Username:"/>
+            <p:inputText value="#{userController.selectedUser.username}" id="uname"/>
+            <h:outputLabel value="Password:"/>
+            <p:inputText value="#{userController.selectedUser.password}" id="pwd"/>
+            <h:outputLabel value="Role:"/>
+            <p:inputText value="#{userController.selectedUser.role}" id="role"/>
+            <f:facet name="footer">
+                <!--<h:outputLabel value="#{customer.msg}" id="msg2" styleClass="msg"/>-->
+                <p:commandButton value="Update User" action="#{userController.doUpdateUser}">
+                    <f:ajax render="ulist id uname pwd role" execute="@form"/>
+                </p:commandButton>
+                <p:commandButton value="Delete User" action="#{userController.doDeleteUsers}">
+                    <f:ajax render="ulist id uname pwd role" execute="@form"/>
+                </p:commandButton>
             </f:facet>
-            <h:outputText value="#{user.username}"/>
-        </p:column>
-
-        <p:column>
-            <f:facet name="header">
-                <h:outputText value="Password"/>
-            </f:facet>
-            <h:outputText value="#{user.password}"/>
-        </p:column>
-
-        <p:column>
-            <f:facet name="header">
-                <h:outputText value="Role"/>
-            </f:facet>
-            <h:outputText value="#{user.role}"/>
-        </p:column>
-    </p:dataTable>
-</h:form>
-
-<p:dialog header="User Detail" widgetVar="userDialog" resizable="false" id="userDlg">
-    <h:form id="userDetailForm">
-        <p:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
-            <h:outputText value="Username :"></h:outputText>
-            <h:outputText value="#{userController.selectedUser.username}"/>
-
-            <h:outputText value="password :"></h:outputText>
-            <h:inputText value="#{userController.selectedUser.password}" required="true"
-                         requiredMessage="Please Enter password!"/>
-
-            <h:outputText value="role :"></h:outputText>
-            <h:inputText value="#{userController.selectedUser.role}" required="true"
-                         requiredMessage="Please Enter role!"/>
         </p:panelGrid>
     </h:form>
-</p:dialog>
+    <br/><br/><br/>
+    <h:form id="form" onLoad="reset()">
+        <p:dataTable id="dataTable" var="user" value="#{userController.users}" styleClass="userDataTableStyle"
+                     paginator="false" rows="10" selection="#{userController.selectedUsers}"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     lazy="true" rowsPerPageTemplate="10,15,50" rowKey="#{user.getUsername()}">
+            <f:facet name="header">
+                User List
+            </f:facet>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="User Id"/>
+                </f:facet>
+                <p:commandLink value="#{user.id}" update=":userDetailForm:display" oncomplete="userDialog.show()"
+                               title="View">
+                    <f:setPropertyActionListener value="#{user}" target="#{userController.selectedUser}"/>
+                </p:commandLink>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Username"/>
+                </f:facet>
+                <h:outputText value="#{user.username}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Password"/>
+                </f:facet>
+                <h:outputText value="#{user.password}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Role"/>
+                </f:facet>
+                <h:outputText value="#{user.role}"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+    <br/><br/><br/>
+    <p:dialog header="User Detail" widgetVar="userDialog" resizable="false" id="userDlg">
+        <h:form id="userDetailForm">
+            <p:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
+                <h:outputText value="Username :"></h:outputText>
+                <h:outputText value="#{userController.selectedUser.username}"/>
+
+                <h:outputText value="password :"></h:outputText>
+                <h:inputText value="#{userController.selectedUser.password}" required="true"
+                             requiredMessage="Please Enter password!"/>
+
+                <h:outputText value="role :"></h:outputText>
+                <h:inputText value="#{userController.selectedUser.role}" required="true"
+                             requiredMessage="Please Enter role!"/>
+            </p:panelGrid>
+        </h:form>
+    </p:dialog>
 
 
 </h:body>
-        </html>
+</html>

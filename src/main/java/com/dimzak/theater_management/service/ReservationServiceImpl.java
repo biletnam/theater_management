@@ -8,9 +8,11 @@ import com.dimzak.theater_management.util.DataAccess;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -99,9 +101,12 @@ public class ReservationServiceImpl implements ReservationService {
         String currentTime = sdf.format(reservation.getView_time());
 
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "insert into movies_theater values (0, \"" + currentTime + "\", \"" + reservation.getMovies_id() + "\", \"" + reservation.getTheater_id() + "\", null);";
-            System.out.println(sql);
-            connection.createStatement().executeUpdate(sql);
+            PreparedStatement p = connection.prepareStatement("insert into movies_theater values (0, ?, ?, ?, null);");
+            p.setString(1, currentTime);
+            p.setInt(2, reservation.getTheater_id());
+            p.setInt(3, reservation.getMovies_id());
+            System.out.println(p);
+            p.executeUpdate();
             result = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,6 +122,43 @@ public class ReservationServiceImpl implements ReservationService {
 
             String sql = "SELECT movies_theater.movies_theater_id, movies_theater.reserved_seats, theater.max_seats, movies_theater.movie_time, theater.name, movies.title FROM theater_management.movies_theater join theater on movies_theater.theater_id = theater.theater_id join movies on movies_theater.movies_id = movies.movies_id;";
             ResultSet rs = connection.createStatement().executeQuery(sql);
+            while (rs.next()) {
+                Projection projection = new Projection();
+                projection.setProjectionId(rs.getInt("movies_theater_id"));
+                projection.setReserved_seats(rs.getInt("reserved_seats"));
+                projection.setMax_seats(rs.getInt("max_seats"));
+                projection.setView_time(rs.getTimestamp("movie_time"));
+                projection.setTheater(rs.getString("name"));
+                projection.setMovie(rs.getString("title"));
+                projections.add(projection);
+            }
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return projections;
+
+    }
+
+    @Override
+    public List<Projection> displayProjectionsByDate(Date from, Date to) {
+
+        SimpleDateFormat sdf =
+                new java.text.SimpleDateFormat("yyyy-MM-dd");
+
+        String fromDate = sdf.format(from);
+        String toDate = sdf.format(to);
+
+        List<Projection> projections = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+
+            PreparedStatement p = connection.prepareStatement("SELECT movies_theater.movies_theater_id, movies_theater.reserved_seats, theater.max_seats, movies_theater.movie_time, theater.name, movies.title FROM theater_management.movies_theater join theater on movies_theater.theater_id = theater.theater_id join movies on movies_theater.movies_id = movies.movies_id" +
+                    " WHERE movies_theater.movie_time BETWEEN ? AND ? ;");
+
+            p.setString(1, fromDate);
+            p.setString(2, toDate);
+            ResultSet rs = p.executeQuery();
             while (rs.next()) {
                 Projection projection = new Projection();
                 projection.setProjectionId(rs.getInt("movies_theater_id"));

@@ -22,16 +22,19 @@ body {
     -o-background-size: cover;
     background-size: cover;
     color: #EAEAEA;
+    background-color: #CFF4FF;
 }
 
 #loginForm {
-    background-color:black;
-    color:red;
-    margin-left:35%;
-    margin-right:10em;
-    margin-top:10%;
-    text-align:center;
-    width:360px;
+    background-color: #2779aa;
+    color: white;
+    margin-left: 35%;
+    margin-right: 10em;
+    margin-top: 10%;
+    text-align: center;
+    width: 360px;
+    padding-top: 5px;
+    border-radius: 5px;
 }
 
 #login_grid {

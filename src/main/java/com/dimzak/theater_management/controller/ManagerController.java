@@ -2,6 +2,7 @@ package com.dimzak.theater_management.controller;
 
 import com.dimzak.theater_management.model.Movie;
 import com.dimzak.theater_management.model.Reservation;
+import com.dimzak.theater_management.model.Theater;
 import com.dimzak.theater_management.service.MovieService;
 import com.dimzak.theater_management.service.ReservationService;
 import com.dimzak.theater_management.util.DataAccess;
@@ -40,6 +41,8 @@ public class ManagerController {
 
     private List<Movie> movies;
 
+    private List<Theater> theaters;
+
     private Movie selectedMovie;
 
     private Movie newMovie = new Movie();
@@ -67,9 +70,10 @@ public class ManagerController {
 
     @PostConstruct
     public void init() {
-        movies = this.movieService.getAllMovies();
+        movies = movieService.getAllMovies();
         selectedMovie = movies.get(0);
-        reservations = this.reservationService.getAllReservations();
+        reservations = reservationService.getAllReservations();
+        theaters = reservationService.getAllTheaters();
     }
 
     public void loadMovie() {
@@ -131,5 +135,13 @@ public class ManagerController {
 
     public void setNewReservation(Reservation newReservation) {
         this.newReservation = newReservation;
+    }
+
+    public List<Theater> getTheaters() {
+        return theaters;
+    }
+
+    public void setTheaters(List<Theater> theaters) {
+        this.theaters = theaters;
     }
 }

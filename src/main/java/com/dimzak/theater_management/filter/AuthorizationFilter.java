@@ -43,6 +43,7 @@ public class AuthorizationFilter implements Filter {
             HttpSession ses = reqt.getSession(false);
             String reqURI = reqt.getRequestURI();
 
+            // redirect from session
             if (ses != null && ses.getAttribute("user") != null) {
                 User user = (User) ses.getAttribute("user");
                 if (reqURI.contains(user.getRole().toString())) {
@@ -51,7 +52,7 @@ public class AuthorizationFilter implements Filter {
                 }
             }
 
-
+            // general resources
             if (reqURI.contains("/index.xhtml")
                     || reqURI.contains("/public/")
                     || reqURI.contains("javax.faces.resource")) {

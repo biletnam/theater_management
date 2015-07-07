@@ -38,6 +38,7 @@ public class LoginController implements Serializable {
         User user = loginService.validateUser(username, password);
         logger.info("Validation returned: " + user.getUsername());
 
+        // user has role
         if (user.isValid()) {
             HttpSession session = Resources.getSession();
             session.setAttribute("user", user);
@@ -57,7 +58,7 @@ public class LoginController implements Serializable {
 
     }
 
-    //logout event, invalidate session
+
     public String logout() {
         logger.info("Logging out");
         HttpSession session = Resources.getSession();

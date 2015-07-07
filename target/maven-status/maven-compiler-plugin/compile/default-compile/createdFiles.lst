@@ -3,7 +3,6 @@ com/dimzak/theater_management/controller/LoginController.class
 com/dimzak/theater_management/service/MovieService.class
 com/dimzak/theater_management/util/Greeter.class
 com/dimzak/theater_management/util/DataAccess.class
-com/dimzak/theater_management/util/LoggedIn.class
 com/dimzak/theater_management/service/ReservationService.class
 com/dimzak/theater_management/service/ReservationServiceImpl.class
 com/dimzak/theater_management/model/User.class

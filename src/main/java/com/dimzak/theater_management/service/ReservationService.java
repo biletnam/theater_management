@@ -4,6 +4,7 @@ import com.dimzak.theater_management.model.Projection;
 import com.dimzak.theater_management.model.Reservation;
 import com.dimzak.theater_management.model.Theater;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,6 +13,8 @@ import java.util.List;
 public interface ReservationService {
 
     List<Projection> displayProjections();
+
+    List<Projection> displayProjectionsByDate(Date from, Date to);
 
     List<Theater> getAllTheaters();
 
