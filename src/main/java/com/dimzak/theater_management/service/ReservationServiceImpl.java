@@ -58,9 +58,7 @@ public class ReservationServiceImpl implements ReservationService {
             while (rs.next()) {
                 Reservation reservation = new Reservation();
                 reservation.setTheater_id(rs.getInt("theater_id"));
-                System.out.println(reservation.getTheater_id());
                 reservation.setMovies_id(rs.getInt("movies_id"));
-                System.out.println(reservation.getMovies_id());
                 reservation.setView_time(rs.getTimestamp("movie_time"));
                 reservation.setReservation_id(rs.getInt("movies_theater_id"));
                 reservation.setReserved_seats(rs.getInt("reserved_seats"));
@@ -105,7 +103,7 @@ public class ReservationServiceImpl implements ReservationService {
             p.setString(1, currentTime);
             p.setInt(2, reservation.getTheater_id());
             p.setInt(3, reservation.getMovies_id());
-            System.out.println(p);
+            System.out.println(p.toString());
             p.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -158,6 +156,7 @@ public class ReservationServiceImpl implements ReservationService {
 
             p.setString(1, fromDate);
             p.setString(2, toDate);
+            System.out.println(p.toString());
             ResultSet rs = p.executeQuery();
             while (rs.next()) {
                 Projection projection = new Projection();

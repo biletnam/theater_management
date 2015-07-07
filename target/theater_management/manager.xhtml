@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>MANAGER: Manage movies and theaters</title>
+</h:head>
+<h:body>
+    <h:outputStylesheet name="/css/style.css"/>
+    <h:form id="logoutForm">
+        <p:commandButton id="logout" value="Logout" action="#{loginController.logout}"/>
+    </h:form>
+    <br/><br/><br/>
+    <h:form id="newUserForm">
+        <p:panelGrid id="displayNewMovie" columns="2" cellpadding="4">
+            <f:facet name="header">
+                Add New Movie
+            </f:facet>
+            <h:outputText value="Movie Title :"> </h:outputText>
+            <p:inputText value="#{managerController.newMovie.title}" required="true" id="title"
+                         requiredMessage="Please Enter Title!"/>
+
+            <h:outputText value="Movie Description :"> </h:outputText>
+            <p:inputText value="#{managerController.newMovie.description}" required="true" id="description"
+                         requiredMessage="Please Enter Description!"/>
+
+            <h:outputText value="Movie Category :"> </h:outputText>
+            <p:inputText value="#{managerController.newMovie.category}" required="true" id="category"
+                         requiredMessage="Please Enter Category!"/>
+
+
+            <f:facet name="footer">
+                <!--<h:outputLabel value="#{customer.msg}" id="msg" styleClass="msg"/>-->
+                <p:commandButton value="Save" action="#{managerController.doCreateMovie}">
+                    <f:ajax render="title description category" execute="@form"/>
+                </p:commandButton>
+            </f:facet>
+        </p:panelGrid>
+    </h:form>
+    <br/><br/><br/>
+
+    <h:form>
+        <p:panelGrid id="panel2" columns="2" border="1"
+                     cellpadding="5" cellspacing="1">
+            <f:facet name="header">
+                <h:outputText value="Update/Delete Movie Info"/>
+            </f:facet>
+            <h:outputLabel value="Select Movie:"/>
+            <h:selectOneMenu value="#{managerController.selectedTitle}" id="ulist">
+                <f:selectItems value="#{managerController.movies}"/>
+                <f:ajax event="change" render="id tit des cat" listener="#{managerController.loadMovie}"/>
+            </h:selectOneMenu>
+            <h:outputLabel value="Movie Id:"/>
+            <p:inputText value="#{managerController.selectedMovie.movies_id}" id="id" readonly="true"/>
+            <h:outputLabel value="Movie Title:"/>
+            <p:inputText value="#{managerController.selectedMovie.title}" id="tit"/>
+            <h:outputLabel value="Movie Description:"/>
+            <p:inputText value="#{managerController.selectedMovie.description}" id="des"/>
+            <h:outputLabel value="Movie Category:"/>
+            <p:inputText value="#{managerController.selectedMovie.category}" id="cat"/>
+            <f:facet name="footer">
+                <!--<h:outputLabel value="#{customer.msg}" id="msg2" styleClass="msg"/>-->
+                <p:commandButton value="Delete Movie" action="#{managerController.doDeleteMovies}">
+                    <f:ajax render="ulist id tit des cat" execute="@form"/>
+                </p:commandButton>
+            </f:facet>
+        </p:panelGrid>
+    </h:form>
+
+    <br/><br/><br/>
+    <h:form id="form" onLoad="reset()">
+        <p:dataTable id="dataTable" var="movie" value="#{managerController.movies}" styleClass="userDataTableStyle"
+                     paginator="false" rows="10" selection="#{managerController.movies}"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     lazy="true" rowsPerPageTemplate="10,15,50" rowKey="#{movie.getTitle()}">
+            <f:facet name="header">
+                Movie List
+            </f:facet>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Movie Id"/>
+                </f:facet>
+                <p:commandLink value="#{movie.movies_id}" update=":userDetailForm:display"
+                               oncomplete="userDialog.show()"
+                               title="View">
+                    <f:setPropertyActionListener value="#{movie}" target="#{managerController.selectedMovie}"/>
+                </p:commandLink>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Movie Title"/>
+                </f:facet>
+                <h:outputText value="#{movie.title}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Movie Description"/>
+                </f:facet>
+                <h:outputText value="#{movie.description}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Movie Category"/>
+                </f:facet>
+                <h:outputText value="#{movie.category}"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+    <br/><br/><br/>
+    <p:dataTable var="reservation" value="#{managerController.reservations}">
+        <f:facet name="header">
+            Reservations
+        </f:facet>
+        <p:column headerText="Reservation Id">
+            <h:outputText value="#{reservation.reservation_id}"/>
+        </p:column>
+
+        <p:column headerText="Movie Id">
+            <h:outputText value="#{reservation.movies_id}"/>
+        </p:column>
+
+        <p:column headerText="Theater Id">
+            <h:outputText value="#{reservation.theater_id}"/>
+        </p:column>
+
+        <p:column headerText="Time">
+            <h:outputText value="#{reservation.view_time}"/>
+        </p:column>
+    </p:dataTable>
+    <br/><br/><br/>
+    <p:dialog header="User Detail" widgetVar="userDialog" resizable="false" id="userDlg">
+        <h:form id="userDetailForm">
+            <p:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
+                <h:outputText value="Username :"></h:outputText>
+                <h:outputText value="#{managerController.selectedMovie.title}"/>
+
+                <h:outputText value="password :"></h:outputText>
+                <h:inputText value="#{managerController.selectedMovie.description}" required="true"
+                             requiredMessage="Please Enter password!"/>
+
+                <h:outputText value="role :"></h:outputText>
+                <h:inputText value="#{managerController.selectedMovie.category}" required="true"
+                             requiredMessage="Please Enter role!"/>
+            </p:panelGrid>
+        </h:form>
+    </p:dialog>
+    <br/><br/><br/>
+    <h:form id="movieTheaterForm">
+        <p:panelGrid id="displayMovieTheater" columns="2" cellpadding="4">
+            <f:facet name="header">
+                Reserve theater for a movie
+            </f:facet>
+            <h:outputText value="Movie id :"> </h:outputText>
+            <p:inputText value="#{managerController.newReservation.movies_id}" required="true" id="res_movies_id"
+                         requiredMessage="Please Enter Title!"/>
+
+            <h:outputText value="Theater id :"> </h:outputText>
+            <p:inputText value="#{managerController.newReservation.theater_id}" required="true" id="res_theater_id"
+                         requiredMessage="Please Enter Description!"/>
+
+            <h:outputText value="View time :"> </h:outputText>
+            <p:calendar value="#{managerController.newReservation.view_time}" pattern="MM/dd/yyyy HH:mm"
+                        id="res_view_time">
+            </p:calendar>
+
+            <f:facet name="footer">
+                <!--<h:outputLabel value="#{customer.msg}" id="msg" styleClass="msg"/>-->
+                <p:commandButton value="Save" action="#{managerController.doCreateReservation}">
+                    <f:ajax render="res_movies_id res_theater_id res_view_time" execute="@form"/>
+                </p:commandButton>
+            </f:facet>
+        </p:panelGrid>
+    </h:form>
+    <br/><br/><br/>
+    <p:dataTable var="theater" value="#{managerController.theaters}">
+        <f:facet name="header">
+            Theaters
+        </f:facet>
+        <p:column headerText="Theater ID">
+            <h:outputText value="#{theater.theater_id}"/>
+        </p:column>
+
+        <p:column headerText="Theater Name">
+            <h:outputText value="#{theater.name}"/>
+        </p:column>
+
+        <p:column headerText="Capacity">
+            <h:outputText value="#{theater.max_seats}"/>
+        </p:column>
+    </p:dataTable>
+
+</h:body>
+</html>

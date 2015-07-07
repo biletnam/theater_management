@@ -41,7 +41,6 @@ public class LoginServiceImpl implements LoginService,Serializable  {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                System.out.println("Found role");
                 //result found, means valid inputs
                 user.setId(rs.getInt("user_id"));
                 user.setRole(Role.valueOf(rs.getString("role")));
