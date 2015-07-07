@@ -55,4 +55,8 @@ public class User {
     public String toString() {
         return username;
     }
+
+    public boolean isValid() {
+        return username != null && role != null;
+    }
 }

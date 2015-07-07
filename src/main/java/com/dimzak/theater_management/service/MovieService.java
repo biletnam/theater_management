@@ -13,5 +13,7 @@ public interface MovieService {
 
     boolean deleteMovies(List<Movie> movie);
 
+    Movie getMovieByTitle(String title);
+
     List<Movie> getAllMovies();
 }

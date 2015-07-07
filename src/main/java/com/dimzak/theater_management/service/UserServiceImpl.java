@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
             String sql = "select * from users where username = " + "\"" + username + "\"" + ";";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next()) {
-                user.setId(rs.getInt("id"));
+                user.setId(rs.getInt("user_id"));
                 user.setPassword(rs.getString("password"));
                 user.setRole(Role.valueOf(rs.getString("role")));
                 user.setUsername(username);
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
         Boolean result = false;
 
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "update users set id = " + user.getId() +
+            String sql = "update users set user_id = " + user.getId() +
                     ", username = " + "\"" + user.getUsername() + "\"" +
                     ", password = " + "\"" + user.getPassword() + "\"" +
                     ", role = " + "\"" + user.getRole() + "\"" +
@@ -139,6 +139,8 @@ public class UserServiceImpl implements UserService {
         }
         return result;
     }
+
+
 
 
 }

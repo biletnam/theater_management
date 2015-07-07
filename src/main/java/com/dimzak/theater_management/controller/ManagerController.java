@@ -1,7 +1,9 @@
 package com.dimzak.theater_management.controller;
 
 import com.dimzak.theater_management.model.Movie;
+import com.dimzak.theater_management.model.Reservation;
 import com.dimzak.theater_management.service.MovieService;
+import com.dimzak.theater_management.service.ReservationService;
 import com.dimzak.theater_management.util.DataAccess;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +25,10 @@ public class ManagerController {
     @DataAccess
     private MovieService movieService;
 
+    @Inject
+    @DataAccess
+    private ReservationService reservationService;
+
     //@Inject
     //@DataAccess
     //private ProjectionService projectionService;
@@ -30,17 +36,26 @@ public class ManagerController {
     @Inject
     private transient Logger logger;
 
+    private List<Reservation> reservations;
+
     private List<Movie> movies;
 
     private Movie selectedMovie;
 
     private Movie newMovie = new Movie();
 
+    private Reservation newReservation = new Reservation();
+
     private String selectedTitle;
 
     public void doCreateMovie() {
         logger.info("Creating movie " + newMovie.getTitle()) ;
         movieService.createMovie(newMovie);
+    }
+
+    public void doCreateReservation() {
+        logger.info("Creating reservation " + newReservation.getTheater_id() + " " + newReservation.getMovies_id() + " " + newReservation.getView_time());
+        reservationService.reserveTheaterForMovie(newReservation);
     }
 
     public void doDeleteMovies() {
@@ -54,6 +69,12 @@ public class ManagerController {
     public void init() {
         movies = this.movieService.getAllMovies();
         selectedMovie = movies.get(0);
+        reservations = this.reservationService.getAllReservations();
+    }
+
+    public void loadMovie() {
+        logger.info("Loading Movie: " + selectedTitle);
+        selectedMovie = movieService.getMovieByTitle(selectedTitle);
     }
 
     public MovieService getMovieService() {
@@ -62,14 +83,6 @@ public class ManagerController {
 
     public void setMovieService(MovieService movieService) {
         this.movieService = movieService;
-    }
-
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public void setLogger(Logger logger) {
-        this.logger = logger;
     }
 
     public List<Movie> getMovies() {
@@ -102,5 +115,21 @@ public class ManagerController {
 
     public void setSelectedTitle(String selectedTitle) {
         this.selectedTitle = selectedTitle;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public Reservation getNewReservation() {
+        return newReservation;
+    }
+
+    public void setNewReservation(Reservation newReservation) {
+        this.newReservation = newReservation;
     }
 }

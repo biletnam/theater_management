@@ -33,10 +33,13 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-        try {
-            HttpServletRequest reqt = (HttpServletRequest) request;
+        HttpServletRequest reqt = null;
+        HttpServletResponse resp = null;
 
-            HttpServletResponse resp = (HttpServletResponse) response;
+        try {
+            reqt = (HttpServletRequest) request;
+
+            resp = (HttpServletResponse) response;
             HttpSession ses = reqt.getSession(false);
             String reqURI = reqt.getRequestURI();
 
@@ -58,7 +61,11 @@ public class AuthorizationFilter implements Filter {
                 resp.sendRedirect(reqt.getContextPath() + "/index.xhtml");
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            if(resp !=null && reqt !=null ) {
+                logger.warning(e.getMessage());
+                resp.sendRedirect(reqt.getContextPath() + "/index.xhtml");
+            }
+            logger.severe(e.getMessage());
         }
     }
 

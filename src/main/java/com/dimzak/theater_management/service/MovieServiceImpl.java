@@ -40,8 +40,21 @@ public class MovieServiceImpl  implements MovieService {
     }
 
     @Override
-    public boolean deleteMovies(List<Movie> movie) {
-        return false;
+    public boolean deleteMovies(List<Movie> movies) {
+        Boolean result = false;
+
+        try (Connection connection = dataSource.getConnection()) {
+            for (Movie movie: movies) {
+                String sql = "delete from movies where title = \"" + movie.getTitle() + "\";";
+                System.out.println(sql);
+                connection.createStatement().executeUpdate(sql);
+
+            }
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -65,5 +78,26 @@ public class MovieServiceImpl  implements MovieService {
             return null;
         }
         return movieList;
+    }
+
+    @Override
+    public Movie getMovieByTitle(String title) {
+        //ResultSet rs  = runQuery("select * from user where username = " + "\"" + username + "\"" + ";");
+
+        Movie movie = new Movie();
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "select * from movies where title = " + "\"" + title + "\"" + ";";
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+            while (rs.next()) {
+                movie.setMovies_id(rs.getInt("movies_id"));
+                movie.setTitle(rs.getString("title"));
+                movie.setCategory(rs.getString("category"));
+                movie.setDescription(rs.getString("description"));
+            }
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return movie;
     }
 }

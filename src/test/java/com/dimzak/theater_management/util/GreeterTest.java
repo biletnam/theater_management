@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 
+import java.util.Calendar;
+
 @RunWith(Arquillian.class)
 public class GreeterTest {
 

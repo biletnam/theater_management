@@ -4,7 +4,7 @@ import com.dimzak.theater_management.model.User;
 import com.dimzak.theater_management.service.LoginService;
 import com.dimzak.theater_management.service.LoginServiceImpl;
 import com.dimzak.theater_management.util.DataAccess;
-import com.dimzak.theater_management.util.SessionBean;
+import com.dimzak.theater_management.util.Resources;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
@@ -35,12 +36,11 @@ public class LoginController implements Serializable {
     public String login() throws Exception {
         logger.info("Logging in...");
         User user = loginService.validateUser(username, password);
+        logger.info("Validation returned: " + user.getUsername());
 
-        if (user != null) {
-            HttpSession session = SessionBean.getSession();
+        if (user.isValid()) {
+            HttpSession session = Resources.getSession();
             session.setAttribute("user", user);
-
-            logger.info("Validating user: " + username);
 
             // Role found
             return user.getRole().toString() + "?faces-redirect=true";
@@ -60,7 +60,7 @@ public class LoginController implements Serializable {
     //logout event, invalidate session
     public String logout() {
         logger.info("Logging out");
-        HttpSession session = SessionBean.getSession();
+        HttpSession session = Resources.getSession();
         session.invalidate();
         return "index?faces-redirect=true";
     }
