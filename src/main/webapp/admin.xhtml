@@ -10,6 +10,7 @@
 </h:head>
 <h:body>
     <h:outputStylesheet name="/css/style.css"/>
+	
     <h:form id="logoutForm">
         <p:commandButton id="logout" value="Logout" action="#{loginController.logout}"/>
     </h:form>
@@ -45,7 +46,7 @@
         <p:panelGrid id="panel2" columns="2" border="1"
                      cellpadding="5" cellspacing="1">
             <f:facet name="header">
-                <h:outputText value="Update/Delete Customer Info"/>
+                <h:outputText value="Update/Delete User Info"/>
             </f:facet>
             <h:outputLabel value="Select User:"/>
             <h:selectOneMenu value="#{userController.selectedUsername}" id="ulist">

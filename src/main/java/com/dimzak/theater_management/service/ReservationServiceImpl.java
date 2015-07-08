@@ -6,6 +6,7 @@ import com.dimzak.theater_management.model.Theater;
 import com.dimzak.theater_management.util.DataAccess;
 
 import javax.annotation.Resource;
+import javax.enterprise.context.ApplicationScoped;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +19,7 @@ import java.util.List;
 /**
  * @author Dimitris Zakas
  */
+@ApplicationScoped
 @DataAccess
 public class ReservationServiceImpl implements ReservationService {
 
