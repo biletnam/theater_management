@@ -16,13 +16,12 @@
  */
 /* Core styles for the page */
 body {
-    /*background: url(/theater_management/resources/media/bg.jpg) no-repeat center center fixed;*/
+   background: url(/theater_management/resources/media/bg.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     color: #EAEAEA;
-    background-color: #CFF4FF;
 }
 
 #loginForm {
